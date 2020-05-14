@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Home</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <h2>Welcome to Ionic!</h2>
+  <ion-list>
+    <ion-item>
+      <ion-label floating>Salário Bruto (R$)</ion-label>
+      <ion-input
+        type="text"
+        name="money"
+        [brmasker]="{money: true}">
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Número de Dependentes</ion-label>
+      <ion-input type="number"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Plono de Saúde (R$)</ion-label>
+      <ion-input
+        type="text"
+        name="money"
+        [brmasker]="{money: true}">
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Alimentação (R$)</ion-label>
+      <ion-input
+        type="text"
+        name="money"
+        [brmasker]="{money: true}">
+      </ion-input>
+    </ion-item>
+    
+    <ion-item>
+      <ion-label floating>Outros Descontos (R$)</ion-label>
+      <ion-input
+        type="text"
+        name="money"
+        [brmasker]="{money: true}">
+      </ion-input>
+    </ion-item>
+  </ion-list>
+</ion-content>
