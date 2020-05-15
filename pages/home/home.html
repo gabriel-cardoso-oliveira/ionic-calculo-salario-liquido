@@ -1,11 +1,25 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>Home</ion-title>
-  </ion-navbar>
+  <ion-toolbar>
+    <ion-title>
+      <p style="font-weight: bold">
+        Calculadora de Salário Líquido
+      </p>
+      <h6>
+        SALÁRIO LÍQUIDO:
+        <span></span>
+      </h6>
+    </ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only>
+        <ion-icon name="add-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-  <h2>Welcome to Ionic!</h2>
+  <!-- <h2>Welcome to Ionic!</h2> -->
   <ion-list>
     <ion-item>
       <ion-label floating>Salário Bruto (R$)</ion-label>
