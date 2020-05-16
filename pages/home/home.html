@@ -6,7 +6,7 @@
       </p>
       <h6>
         SALÁRIO LÍQUIDO:
-        <span></span>
+        <span>{{ netSalary }}</span>
       </h6>
     </ion-title>
 
@@ -26,13 +26,18 @@
       <ion-input
         type="text"
         name="money"
-        [brmasker]="{money: true}">
+        [brmasker]="{money: true, decimalCaracter: '.', decimal: '2'}"
+        (ionChange)="calculateSalary()"
+        [(ngModel)]="grossSalary">
       </ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label floating>Número de Dependentes</ion-label>
-      <ion-input type="number"></ion-input>
+      <ion-input
+        type="number"
+        [(ngModel)]="numberDependents">
+      </ion-input>
     </ion-item>
 
     <ion-item>
@@ -40,7 +45,8 @@
       <ion-input
         type="text"
         name="money"
-        [brmasker]="{money: true}">
+        [brmasker]="{money: true}"
+        [(ngModel)]="plan">
       </ion-input>
     </ion-item>
 
@@ -49,7 +55,8 @@
       <ion-input
         type="text"
         name="money"
-        [brmasker]="{money: true}">
+        [brmasker]="{money: true}"
+        [(ngModel)]="food">
       </ion-input>
     </ion-item>
     
@@ -58,7 +65,8 @@
       <ion-input
         type="text"
         name="money"
-        [brmasker]="{money: true}">
+        [brmasker]="{money: true}"
+        [(ngModel)]="otherDiscounts">
       </ion-input>
     </ion-item>
   </ion-list>
