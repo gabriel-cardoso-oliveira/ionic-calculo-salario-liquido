@@ -9,11 +9,41 @@ export class HomePage {
 
   netSalary = 0
   grossSalary = ''
+  numberDependents
+  reduceDependents = 189.59;
 
   firstBanner = 1045;
   secondBanner = 2089.60;
   thirdBanner = 3134.40;
   fourthBanner = 6101.06;
+
+  irrf = [
+    {
+      calc: 1903.98,
+      percentage: 0,
+      reduce: 0
+    },
+    {
+      calc: 2826.65,
+      percentage: 0.075,
+      reduce: 142.80
+    },
+    {
+      calc: 3751.05,
+      percentage: 0.15,
+      reduce: 142.80
+    },
+    {
+      calc: 4664.68,
+      percentage: 22.5,
+      reduce: 636.13
+    },
+    {
+      calc: 4664.69,
+      percentage: 27.5,
+      reduce: 869.36
+    }
+  ]
 
   constructor(public navCtrl: NavController) {
     this.calculateSalary()
@@ -51,9 +81,28 @@ export class HomePage {
       const first = this.calculateFirstBanner(this.firstBanner)
       const second = this.calculateSecondBanner(this.secondBanner)
       const third = this.calculateThirdBanner(this.thirdBanner)
-      resultLast = this.calculateFourthBanner(salary) + first + second +third
+      resultLast = this.calculateFourthBanner(salary) + first + second + third
     } else if (salary > this.fourthBanner) resultLast = 713.10;
     return resultLast;
+  }
+
+  calculateDependents(salary) {
+    const reduce = this.numberDependents * this.reduceDependents
+    return salary - reduce;
+  }
+
+  calculateLastIrrf(salary, percentage, reduce) {
+    return (salary * percentage) - reduce;
+  }
+
+  calculateIrrf(salary) {
+    let resultLast = 0
+    if (this.numberDependents) salary = this.calculateDependents(salary);
+    this.irrf.map((e, index) => {
+      if (!index) {
+        // if (salary <= e.calc) 
+      }
+    })
   }
 
   calculateSalary() {
@@ -61,6 +110,6 @@ export class HomePage {
     console.log('grossSalary', this.grossSalary)
     if (!this.grossSalary) return;
     const inss = this.calculateInss()
-    this.netSalary = inss;
+    this.netSalary = inss
   }
 }
