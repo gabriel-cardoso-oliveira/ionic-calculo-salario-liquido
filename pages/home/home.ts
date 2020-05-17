@@ -88,11 +88,11 @@ export class HomePage {
 
   calculateDependents(salary) {
     const reduce = this.numberDependents * this.reduceDependents
-    return salary - reduce;
+    return parseFloat((salary - reduce).toFixed(2));
   }
 
   calculateLastIrrf(salary, percentage, reduce) {
-    return (salary * percentage) - reduce;
+    return parseFloat(((salary * percentage) - reduce).toFixed(2));
   }
 
   calculateIrrf(salary) {
@@ -100,7 +100,11 @@ export class HomePage {
     if (this.numberDependents) salary = this.calculateDependents(salary);
     this.irrf.map((e, index) => {
       if (!index) {
-        // if (salary <= e.calc) 
+        if (salary <= e.calc) resultLast = this.calculateLastIrrf(salary, e.percentage, e.reduce)
+      } else if (salary > this.irrf[--index].calc && salary <= e.calc) {
+        resultLast = this.calculateLastIrrf(salary, e.percentage, e.reduce)
+      } else if (this.irrf.length -1 === index && salary > e.calc) {
+        resultLast = this.calculateLastIrrf(salary, e.percentage, e.reduce)
       }
     })
   }
