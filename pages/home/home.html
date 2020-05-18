@@ -36,7 +36,8 @@
       <ion-label floating>Número de Dependentes</ion-label>
       <ion-input
         type="number"
-        [(ngModel)]="numberDependents">
+        [(ngModel)]="numberDependents"
+        (ionChange)="calculateSalary()">
       </ion-input>
     </ion-item>
 

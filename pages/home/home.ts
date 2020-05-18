@@ -107,13 +107,20 @@ export class HomePage {
         resultLast = this.calculateLastIrrf(salary, e.percentage, e.reduce)
       }
     })
+    return resultLast
   }
 
   calculateSalary() {
     console.log('grossSalary', parseFloat(this.grossSalary))
-    console.log('grossSalary', this.grossSalary)
+    // console.log('grossSalary', this.grossSalary)
     if (!this.grossSalary) return;
+    let salary = parseFloat(this.grossSalary)
     const inss = this.calculateInss()
-    this.netSalary = inss
+    salary -= inss
+    console.log('salary', salary)
+    const irrf = this.calculateIrrf(salary)
+    console.log('irrf', irrf)
+    salary -= irrf
+    this.netSalary = salary
   }
 }
