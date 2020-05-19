@@ -19,7 +19,6 @@
 </ion-header>
 
 <ion-content padding>
-  <!-- <h2>Welcome to Ionic!</h2> -->
   <ion-list>
     <ion-item>
       <ion-label floating>Salário Bruto (R$)</ion-label>
@@ -46,8 +45,9 @@
       <ion-input
         type="text"
         name="money"
-        [brmasker]="{money: true}"
-        [(ngModel)]="plan">
+        [brmasker]="{money: true, decimalCaracter: '.', decimal: '2'}"
+        [(ngModel)]="plan"
+        (ionChange)="calculateSalary()">
       </ion-input>
     </ion-item>
 
@@ -56,8 +56,9 @@
       <ion-input
         type="text"
         name="money"
-        [brmasker]="{money: true}"
-        [(ngModel)]="food">
+        [brmasker]="{money: true, decimalCaracter: '.', decimal: '2'}"
+        [(ngModel)]="food"
+        (ionChange)="calculateSalary()">
       </ion-input>
     </ion-item>
     
@@ -66,8 +67,9 @@
       <ion-input
         type="text"
         name="money"
-        [brmasker]="{money: true}"
-        [(ngModel)]="otherDiscounts">
+        [brmasker]="{money: true, decimalCaracter: '.', decimal: '2'}"
+        [(ngModel)]="otherDiscounts"
+        (ionChange)="calculateSalary()">
       </ion-input>
     </ion-item>
   </ion-list>

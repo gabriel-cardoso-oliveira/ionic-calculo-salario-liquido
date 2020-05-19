@@ -9,6 +9,9 @@ export class HomePage {
 
   netSalary = 0
   grossSalary = ''
+  plan = ''
+  food = ''
+  otherDiscounts = ''
   numberDependents
   reduceDependents = 189.59;
 
@@ -35,12 +38,12 @@ export class HomePage {
     },
     {
       calc: 4664.68,
-      percentage: 22.5,
+      percentage: 0.225,
       reduce: 636.13
     },
     {
       calc: 4664.69,
-      percentage: 27.5,
+      percentage: 0.275,
       reduce: 869.36
     }
   ]
@@ -87,7 +90,8 @@ export class HomePage {
   }
 
   calculateDependents(salary) {
-    const reduce = this.numberDependents * this.reduceDependents
+    const numberDependents = this.numberDependents >= 0 ? this.numberDependents : 0
+    const reduce = numberDependents * this.reduceDependents
     return parseFloat((salary - reduce).toFixed(2));
   }
 
@@ -111,16 +115,15 @@ export class HomePage {
   }
 
   calculateSalary() {
-    console.log('grossSalary', parseFloat(this.grossSalary))
-    // console.log('grossSalary', this.grossSalary)
     if (!this.grossSalary) return;
     let salary = parseFloat(this.grossSalary)
     const inss = this.calculateInss()
     salary -= inss
-    console.log('salary', salary)
     const irrf = this.calculateIrrf(salary)
-    console.log('irrf', irrf)
     salary -= irrf
-    this.netSalary = salary
+    salary -= this.plan ? parseFloat(this.plan) : 0
+    salary -= this.food ? parseFloat(this.food) : 0
+    salary -= this.otherDiscounts ? parseFloat(this.otherDiscounts) : 0
+    this.netSalary = parseFloat(salary.toFixed(2))
   }
 }
