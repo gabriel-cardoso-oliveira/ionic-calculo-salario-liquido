@@ -14,11 +14,27 @@ export class HomePage {
   otherDiscounts = ''
   numberDependents
   reduceDependents = 189.59;
+  maxForesight = 713.10;
+  banners = []
 
-  firstBanner = 1045;
-  secondBanner = 2089.60;
-  thirdBanner = 3134.40;
-  fourthBanner = 6101.06;
+  inss = [
+    {
+      calc: 1045,
+      percentage: 0.075
+    },
+    {
+      calc: 2089.60,
+      percentage: 0.09
+    },
+    {
+      calc: 3134.40,
+      percentage: 0.12
+    },
+    {
+      calc: 6101.06,
+      percentage: 0.14
+    }
+  ]
 
   irrf = [
     {
@@ -50,48 +66,40 @@ export class HomePage {
 
   constructor(public navCtrl: NavController) {
     this.calculateSalary()
+    this.calculateSalaryRange()
   }
 
-  calculateFirstBanner(salary) {
-    return parseFloat((salary * 0.075).toFixed(2));
+  calculateBanner(salary, reduce, percentage) {
+    return parseFloat(((salary - reduce) * percentage).toFixed(2))
   }
 
-  calculateSecondBanner(salary) {
-    return parseFloat(((salary - this.firstBanner) * 0.09).toFixed(2));
+  calculateSalaryRange() {
+    this.inss.map((e, index) => {
+      if (!index) this.banners.push(parseFloat((e.calc * e.percentage).toFixed(2)))
+      else if (index < this.inss.length -1) {
+        this.banners.push(this.calculateBanner(e.calc, this.inss[--index].calc, e.percentage))
+      }
+    })
   }
 
-  calculateThirdBanner(salary) {
-    return parseFloat(((salary - this.secondBanner) * 0.12).toFixed(2));
-  }
-
-  calculateFourthBanner(salary) {
-    return parseFloat(((salary - this.thirdBanner) * 0.14).toFixed(2));
-  }
-
-  calculateInss() {
-    const salary = parseFloat(this.grossSalary)
+  calculateInss(salary) {
     let resultLast = 0
-    if (salary <= this.firstBanner) {
-      resultLast = this.calculateFirstBanner(salary)
-    } else if (salary > this.firstBanner && salary <= this.secondBanner) {
-      const first = this.calculateFirstBanner(this.firstBanner)
-      resultLast = this.calculateSecondBanner(salary) + first
-    } else if (salary > this.secondBanner && salary <= this.thirdBanner) {
-      const first = this.calculateFirstBanner(this.firstBanner)
-      const second = this.calculateSecondBanner(this.secondBanner)
-      resultLast = this.calculateThirdBanner(salary) + first + second
-    } else if (salary > this.thirdBanner && salary <= this.fourthBanner) {
-      const first = this.calculateFirstBanner(this.firstBanner)
-      const second = this.calculateSecondBanner(this.secondBanner)
-      const third = this.calculateThirdBanner(this.thirdBanner)
-      resultLast = this.calculateFourthBanner(salary) + first + second + third
-    } else if (salary > this.fourthBanner) resultLast = 713.10;
-    return resultLast;
+    const reducer = (accumulator, currentValue) => accumulator + currentValue;
+    this.inss.map((e, index) => {
+      const count = index
+      if (!index) {
+        if (salary <= e.calc) resultLast = parseFloat((salary * e.percentage).toFixed(2));
+      } else if (salary > this.inss[--index].calc && salary <= e.calc) {
+        const banners = this.banners.filter((v, key) => index >= key)
+        const calc = this.calculateBanner(salary, this.inss[index].calc, e.percentage)
+        resultLast = parseFloat(banners.reduce(reducer, calc).toFixed(2))
+      } else if (this.inss.length -1 === count && salary > e.calc) resultLast = this.maxForesight;
+    })
+    return resultLast
   }
 
   calculateDependents(salary) {
-    const numberDependents = this.numberDependents >= 0 ? this.numberDependents : 0
-    const reduce = numberDependents * this.reduceDependents
+    const reduce = this.numberDependents * this.reduceDependents
     return parseFloat((salary - reduce).toFixed(2));
   }
 
@@ -103,11 +111,12 @@ export class HomePage {
     let resultLast = 0
     if (this.numberDependents) salary = this.calculateDependents(salary);
     this.irrf.map((e, index) => {
+      const count = index
       if (!index) {
         if (salary <= e.calc) resultLast = this.calculateLastIrrf(salary, e.percentage, e.reduce)
       } else if (salary > this.irrf[--index].calc && salary <= e.calc) {
         resultLast = this.calculateLastIrrf(salary, e.percentage, e.reduce)
-      } else if (this.irrf.length -1 === index && salary > e.calc) {
+      } else if (this.irrf.length -1 === count && salary > e.calc) {
         resultLast = this.calculateLastIrrf(salary, e.percentage, e.reduce)
       }
     })
@@ -117,7 +126,7 @@ export class HomePage {
   calculateSalary() {
     if (!this.grossSalary) return;
     let salary = parseFloat(this.grossSalary)
-    const inss = this.calculateInss()
+    const inss = this.calculateInss(salary)
     salary -= inss
     const irrf = this.calculateIrrf(salary)
     salary -= irrf
