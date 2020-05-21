@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Detalhes
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button icon-only (click)="dismiss()">
+        <span ion-text color="primary" showWhen="ios">Cancel</span>
+        <ion-icon name="close-circle"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list>
+      <ion-item>
+        <h2 [style.color]="details.color">{{ details.salary }}</h2>
+        <p>{{ details.description }}</p>
+      </ion-item>
+      <ion-item *ngFor="let item of details.items">
+        <span [style.color]="item.color">{{ item.title }}</span>
+        <ion-note item-end>
+          {{ item.note }}
+        </ion-note>
+      </ion-item>
+  </ion-list>
+</ion-content>

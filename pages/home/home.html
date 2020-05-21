@@ -6,12 +6,12 @@
       </p>
       <h6>
         SALÁRIO LÍQUIDO:
-        <span>{{ netSalary }}</span>
+        <span style="color:green;">{{ netSalary }}</span>
       </h6>
     </ion-title>
 
     <ion-buttons end>
-      <button ion-button icon-only>
+      <button ion-button icon-only (click)="openModal()">
         <ion-icon name="add-circle"></ion-icon>
       </button>
     </ion-buttons>

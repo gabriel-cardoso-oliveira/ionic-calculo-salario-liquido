@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import {
+  NavController,
+  ModalController
+} from 'ionic-angular';
+import { DetailsPage } from './../details/details';
 
 @Component({
   selector: 'page-home',
@@ -16,6 +20,11 @@ export class HomePage {
   reduceDependents = 189.59;
   maxForesight = 713.10;
   banners = []
+  planEnd = 0
+  foodEnd = 0
+  discountsEnd = 0
+  inssEnd = 0
+  irrfEnd = 0
 
   inss = [
     {
@@ -64,9 +73,38 @@ export class HomePage {
     }
   ]
 
-  constructor(public navCtrl: NavController) {
+  detailsSalary = {
+    salary: 0,
+    description: 'Salário Líquido Mensal',
+    color: 'green',
+    items: []
+  }
+
+  constructor(public navCtrl: NavController, public modalCtrl: ModalController) {
     this.calculateSalary()
     this.calculateSalaryRange()
+  }
+
+  fillDetails(title, note, color) {
+    this.detailsSalary.items.push({
+      title,
+      note,
+      color
+    })
+  }
+
+  openModal() {
+    if (!this.grossSalary) return;
+    this.detailsSalary.items = []
+    this.detailsSalary.salary = this.netSalary
+    this.fillDetails(this.grossSalary, 'Salário Bruto', 'blue')
+    this.fillDetails(`- R$${this.inssEnd}`, 'INSS', 'red')
+    this.fillDetails(`- R$${this.irrfEnd}`, 'IRRF', 'red')
+    this.fillDetails(`- R$${this.planEnd}`, 'Plano de Saúde', 'red')
+    this.fillDetails(`- R$${this.foodEnd}`, 'Alimentação', 'red')
+    this.fillDetails(`- R$${this.discountsEnd}`, 'Outros Descontos', 'red')
+    const modal = this.modalCtrl.create(DetailsPage, this.detailsSalary)
+    modal.present()
   }
 
   calculateBanner(salary, reduce, percentage) {
@@ -126,13 +164,16 @@ export class HomePage {
   calculateSalary() {
     if (!this.grossSalary) return;
     let salary = parseFloat(this.grossSalary)
-    const inss = this.calculateInss(salary)
-    salary -= inss
-    const irrf = this.calculateIrrf(salary)
-    salary -= irrf
-    salary -= this.plan ? parseFloat(this.plan) : 0
-    salary -= this.food ? parseFloat(this.food) : 0
-    salary -= this.otherDiscounts ? parseFloat(this.otherDiscounts) : 0
+    this.inssEnd = this.calculateInss(salary)
+    salary -= this.inssEnd
+    this.irrfEnd = this.calculateIrrf(salary)
+    salary -= this.irrfEnd
+    this.planEnd = this.plan ? parseFloat(this.plan) : 0
+    this.foodEnd = this.food ? parseFloat(this.food) : 0
+    this.discountsEnd = this.otherDiscounts ? parseFloat(this.otherDiscounts) : 0
+    salary -= this.planEnd
+    salary -= this.foodEnd
+    salary -= this.discountsEnd
     this.netSalary = parseFloat(salary.toFixed(2))
   }
 }
