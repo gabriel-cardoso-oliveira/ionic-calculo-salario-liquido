@@ -4,3 +4,10 @@
 
 #### Programação Reative + TypeScript + Angular
 
+## Page Home
+
+![Home](./img/home.PNG)
+
+## Page Details
+
+![Detail](./img/detail.PNG)
