@@ -1,3 +1,6 @@
-# ionic-hud58e
+# Calculadora de Salário Liquido com Ionic
 
-[Edit on StackBlitz ⚡️](https://stackblitz.com/edit/ionic-hud58e)
+### DEMO [Edit on StackBlitz ⚡️](https://stackblitz.com/edit/ionic-hud58e)
+
+#### Programação Reative + TypeScript + Angular
+
